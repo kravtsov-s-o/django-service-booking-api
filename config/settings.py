@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'users',
     'services',
     'appointments',
+    'wallets',
 ]
 
 MIDDLEWARE = [
