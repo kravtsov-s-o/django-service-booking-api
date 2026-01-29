@@ -12,8 +12,8 @@ class User(AbstractUser):
     email = models.EmailField(unique=True)
     role = models.IntegerField(choices=Role.choices, default=Role.CLIENT, db_index=True)
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = ["username"]
 
     @property
     def full_name(self) -> str:
@@ -25,27 +25,31 @@ class User(AbstractUser):
         return self.full_name
 
     class Meta:
-        ordering = ('first_name', 'last_name')
-        verbose_name = 'User'
-        verbose_name_plural = 'Users'
+        ordering = ("first_name", "last_name")
+        verbose_name = "User"
+        verbose_name_plural = "Users"
 
 
 class SpecialistProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='specialist_profile')
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, related_name="specialist_profile"
+    )
     is_owner = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name = 'Specialist'
-        verbose_name_plural = 'Specialists'
+        verbose_name = "Specialist"
+        verbose_name_plural = "Specialists"
 
 
 class ClientProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='client_profile')
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, related_name="client_profile"
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name = 'Client'
-        verbose_name_plural = 'Clients'
+        verbose_name = "Client"
+        verbose_name_plural = "Clients"
