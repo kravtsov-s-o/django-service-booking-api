@@ -16,6 +16,8 @@ class CustomUserAdmin(UserAdmin):
 
     model = User
 
+    fieldsets = UserAdmin.fieldsets + (("Role", {"fields": ("role",)}),)
+
 
 @admin.register(SpecialistProfile)
 class SpecialistProfileAdmin(admin.ModelAdmin):
