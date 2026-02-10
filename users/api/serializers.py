@@ -1,8 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-from users.api.fields import UserRoleField
-
 User = get_user_model()
 
 
@@ -11,7 +9,7 @@ class MeSerializer(serializers.ModelSerializer):
     Serializer for representing and updating the current user.
     """
 
-    role = UserRoleField(read_only=True)
+    role = serializers.CharField(source="get_role_display", read_only=True)
 
     class Meta:
         model = User

@@ -2,14 +2,12 @@ from django.contrib.auth import get_user_model
 from django.db import transaction
 from rest_framework import serializers
 
-from users.api.fields import UserRoleField
 from users.models import SpecialistProfile, ClientProfile
 
 User = get_user_model()
 
 
 class AdminUserCreateSerializer(serializers.ModelSerializer):
-    role = UserRoleField()
     password = serializers.CharField(write_only=True)
 
     class Meta:
@@ -44,7 +42,7 @@ class AdminUserCreateSerializer(serializers.ModelSerializer):
 
 
 class AdminUserUpdateSerializer(serializers.ModelSerializer):
-    role = UserRoleField(read_only=True)
+    role = serializers.CharField(source="get_role_display", read_only=True)
 
     class Meta:
         model = User
