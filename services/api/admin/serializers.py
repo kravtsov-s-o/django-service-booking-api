@@ -19,13 +19,25 @@ class AdminServiceSerializer(serializers.ModelSerializer):
 
 
 class AdminSpecialistServiceSerializer(serializers.ModelSerializer):
+    specialist_name = serializers.CharField(
+        source="specialist.user.full_name", read_only=True
+    )
+    service_title = serializers.CharField(source="service.title", read_only=True)
+
+    payout_type_display = serializers.CharField(
+        source="get_payout_type_display", read_only=True
+    )
+
     class Meta:
         model = SpecialistService
         fields = (
             "id",
             "specialist",
+            "specialist_name",
             "service",
+            "service_title",
             "payout_type",
+            "payout_type_display",
             "payout_value",
             "created_at",
             "updated_at",

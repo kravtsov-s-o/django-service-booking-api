@@ -24,7 +24,9 @@ class AdminServicesViewSet(viewsets.ModelViewSet):
 
 
 class AdminSpecialistServicesViewSet(viewsets.ModelViewSet):
-    queryset = SpecialistService.objects.filter(is_active=True)
+    queryset = SpecialistService.objects.select_related(
+        "specialist__user", "service"
+    ).filter(is_active=True)
     serializer_class = AdminSpecialistServiceSerializer
     permission_classes = (permissions.IsAuthenticated, IsAdminUserRole)
 
