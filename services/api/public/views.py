@@ -7,6 +7,6 @@ from services.models import Service
 
 # Create your views here.
 class ServicesViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Service.objects.filter(is_active=True).order_by('title')
+    queryset = Service.objects.filter(is_active=True).order_by("title")
     serializer_class = ServicesSerializer
     permission_classes = (AllowAny,)
