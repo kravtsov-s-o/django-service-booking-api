@@ -1,8 +1,9 @@
 from django.contrib.auth import get_user_model
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
+from users.api.admin.permissions import IsAdminUserRole
 from users.api.admin.serializers import (
     AdminUserCreateSerializer,
     AdminUserUpdateSerializer,
@@ -13,6 +14,7 @@ User = get_user_model()
 
 
 class AdminUserViewSet(viewsets.ModelViewSet):
+    permission_classes = (permissions.IsAuthenticated, IsAdminUserRole)
     queryset = User.objects.all().order_by("-id")
 
     def get_serializer_class(self):
