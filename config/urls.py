@@ -24,4 +24,5 @@ urlpatterns = [
     path("api/v1/", include("wallets.api.urls")),
     path("api/v1/", include("services.api.public.urls")),
     path("api/v1/admin/", include("users.api.admin.urls")),
+    path("api/v1/admin/", include("services.api.admin.urls")),
 ]
