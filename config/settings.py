@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     "users",
     "services",
     "appointments",
-    "wallets",
+    "wallets.apps.WalletsConfig",
 ]
 
 MIDDLEWARE = [
