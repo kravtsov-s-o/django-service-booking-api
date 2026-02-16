@@ -20,10 +20,14 @@ from django.urls import path, include
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("api-auth/", include("rest_framework.urls")),
+    # Profile's
     path("api/v1/", include("users.api.urls")),
-    path("api/v1/", include("wallets.api.urls")),
+    # Only for Clients
+    path("api/v1/me/", include("wallets.api.urls")),
+    path("api/v1/me/", include("appointments.api.client.urls")),
+    path("api/v1/me/", include("appointments.api.specialist.urls")),
     path("api/v1/", include("services.api.public.urls")),
-    path("api/v1/client/", include("appointments.api.urls")),
     path("api/v1/admin/", include("users.api.admin.urls")),
     path("api/v1/admin/", include("services.api.admin.urls")),
 ]
