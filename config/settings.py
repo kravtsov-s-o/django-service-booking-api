@@ -131,5 +131,5 @@ STATIC_URL = "static/"
 AUTH_USER_MODEL = "users.User"
 
 REST_FRAMEWORK = {
-    "DEFAULT_PAGINATION_CLASS": "core.pagination.DefaultPagination",
+    "DEFAULT_PAGINATION_CLASS": "core.api.pagination.DefaultPagination",
 }
