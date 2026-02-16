@@ -1,8 +1,4 @@
-from rest_framework.routers import DefaultRouter
-
+from core.api.routers import build_router
 from services.api.public.views import ServicesViewSet
 
-router = DefaultRouter()
-router.register("services", ServicesViewSet, basename="public-services")
-
-urlpatterns = router.urls
+urlpatterns = build_router(("services", ServicesViewSet, "public-services"))

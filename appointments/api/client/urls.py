@@ -1,9 +1,4 @@
-from rest_framework.routers import DefaultRouter
-
 from appointments.api.client.views import ClientServiceRecordViewSet
+from core.api.routers import build_router
 
-router = DefaultRouter()
-router.register(
-    "appointments", ClientServiceRecordViewSet, basename="client-appointments"
-)
-urlpatterns = router.urls
+urlpatterns = build_router(("appointments", ClientServiceRecordViewSet, "client-appointments"))
