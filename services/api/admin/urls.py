@@ -6,5 +6,9 @@ from services.api.admin.views import (
 
 urlpatterns = build_router(
     ("services", AdminServicesViewSet, "admin-services"),
-    ("specialist-services", AdminSpecialistServicesViewSet, "admin-specialist-services",),
+    (
+        "specialist-services",
+        AdminSpecialistServicesViewSet,
+        "admin-specialist-services",
+    ),
 )

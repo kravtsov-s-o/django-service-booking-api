@@ -1,5 +1,3 @@
-from abc import ABC, abstractmethod
-
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.mixins import CreateModelMixin, ListModelMixin, RetrieveModelMixin
@@ -25,9 +23,7 @@ class BaseServiceRecordViewSet(
         profile = self.get_profile()
 
         return (
-            ServiceRecord.objects.filter(
-                **{self.lookup_user_field: profile}
-            )
+            ServiceRecord.objects.filter(**{self.lookup_user_field: profile})
             .select_related(*self.select_related_fields)
             .order_by("-scheduled_at")
         )
