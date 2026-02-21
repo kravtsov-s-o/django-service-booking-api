@@ -1,7 +1,12 @@
+from django.core.exceptions import ValidationError
+from rest_framework import status
+from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
 from appointments.api.base.views import BaseServiceRecordViewSet
 from appointments.api.specialist.serializers import SpecialistServiceRecordSerializer
+from appointments.models import ServiceRecord
 from users.api.permissions import IsSpecialistUser
 
 
@@ -15,16 +20,13 @@ class SpecialistServiceRecordViewSet(BaseServiceRecordViewSet):
     def get_profile(self):
         return self.request.user.specialist_profile
 
-    # @action(detail=True, methods=["post"], url_path="complete")
-    # def complete(self, request, pk=None):
-    #     appointment = self.get_object()
-    #
-    #     if appointment.status != appointment.Status.PLANNED:
-    #         return Response({"detail": "Only planned appointments can be Completed."},
-    #                         status=status.HTTP_400_BAD_REQUEST,
-    #                         )
-    #
-    #     appointment.status = ServiceRecord.Status.COMPLETED
-    #     appointment.save(update_fields=["status", "updated_at"])
-    #
-    #     return Response(status=status.HTTP_200_OK)
+    @action(detail=True, methods=["post"])
+    def complete(self, request, pk=None):
+        appointment = self.get_object()
+
+        try:
+            appointment.transition(ServiceRecord.Status.COMPLETED)
+        except ValidationError as e:
+            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(status=status.HTTP_200_OK)

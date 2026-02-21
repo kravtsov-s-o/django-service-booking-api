@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.mixins import CreateModelMixin, ListModelMixin, RetrieveModelMixin
@@ -35,13 +36,9 @@ class BaseServiceRecordViewSet(
     def cancel(self, request, pk=None):
         appointment = self.get_object()
 
-        if appointment.status != appointment.Status.PLANNED:
-            return Response(
-                {"detail": "Only planned appointments can be cancelled."},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-
-        appointment.status = ServiceRecord.Status.CANCELLED
-        appointment.save(update_fields=["status", "updated_at"])
+        try:
+            appointment.transition(ServiceRecord.Status.CANCELLED)
+        except ValidationError as e:
+            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
         return Response(status=status.HTTP_200_OK)
