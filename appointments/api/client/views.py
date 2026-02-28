@@ -1,12 +1,12 @@
 from rest_framework.permissions import IsAuthenticated
 
-from appointments.api.base.views import BaseServiceRecordViewSet
+from appointments.api.base.views import UserScopedServiceRecordViewSet
 from appointments.api.client.serializer import ClientServiceRecordSerializer
 from users.api.permissions import IsClientUser
 
 
 # Create your views here.
-class ClientServiceRecordViewSet(BaseServiceRecordViewSet):
+class ClientServiceRecordViewSet(UserScopedServiceRecordViewSet):
     serializer_class = ClientServiceRecordSerializer
     permission_classes = (IsAuthenticated, IsClientUser)
 

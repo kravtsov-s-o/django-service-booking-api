@@ -4,13 +4,13 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from appointments.api.base.views import BaseServiceRecordViewSet
+from appointments.api.base.views import UserScopedServiceRecordViewSet
 from appointments.api.specialist.serializers import SpecialistServiceRecordSerializer
 from appointments.models import ServiceRecord
 from users.api.permissions import IsSpecialistUser
 
 
-class SpecialistServiceRecordViewSet(BaseServiceRecordViewSet):
+class SpecialistServiceRecordViewSet(UserScopedServiceRecordViewSet):
     serializer_class = SpecialistServiceRecordSerializer
     permission_classes = (IsAuthenticated, IsSpecialistUser)
 
