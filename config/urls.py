@@ -26,8 +26,11 @@ urlpatterns = [
     # Only for Clients
     path("api/v1/me/", include("wallets.api.urls")),
     path("api/v1/me/", include("appointments.api.client.urls")),
+    # Only for Specialists
     path("api/v1/me/", include("appointments.api.specialist.urls")),
+    # Public Services without login
     path("api/v1/", include("services.api.public.urls")),
+    # Admin Zone
     path("api/v1/admin/", include("users.api.admin.urls")),
     path("api/v1/admin/", include("services.api.admin.urls")),
     path("api/v1/admin/", include("appointments.api.admin.urls")),
