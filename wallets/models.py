@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import CheckConstraint, Q
 
 
 # Create your models here.
@@ -18,11 +19,16 @@ class ClientWallet(models.Model):
         verbose_name_plural = "Client Wallets"
 
 
+MANUAL_TOPUP = 1
+SERVICE_CHARGE = 2
+REFUND = 3
+
+
 class ClientWalletTransaction(models.Model):
     class Type(models.IntegerChoices):
-        MANUAL_TOPUP = 1
-        SERVICE_CHARGE = 2
-        REFUND = 3
+        MANUAL_TOPUP = MANUAL_TOPUP
+        SERVICE_CHARGE = SERVICE_CHARGE
+        REFUND = REFUND
 
     wallet = models.ForeignKey(
         ClientWallet, on_delete=models.CASCADE, related_name="transactions"
@@ -31,6 +37,7 @@ class ClientWalletTransaction(models.Model):
     type = models.IntegerField(
         choices=Type.choices, default=Type.SERVICE_CHARGE, db_index=True
     )
+    balance_after = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     service_record = models.ForeignKey(
         "appointments.ServiceRecord",
         on_delete=models.SET_NULL,
@@ -47,3 +54,13 @@ class ClientWalletTransaction(models.Model):
         ordering = ["-created_at"]
         verbose_name = "Wallet Transaction"
         verbose_name_plural = "Wallet Transactions"
+
+        constraints = [
+            CheckConstraint(
+                condition=(
+                    Q(type=MANUAL_TOPUP, service_record__isnull=True)
+                    | Q(type__in=[SERVICE_CHARGE, REFUND], service_record__isnull=False)
+                ),
+                name="wallet_transaction_service_record_constraint",
+            )
+        ]

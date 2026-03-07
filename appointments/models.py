@@ -8,6 +8,12 @@ class ServiceRecord(models.Model):
         COMPLETED = 2
         CANCELLED = 3
 
+    ALLOWED_TRANSITIONS = {
+        Status.PLANNED: {Status.COMPLETED, Status.CANCELLED},
+        Status.CANCELLED: set(),
+        Status.COMPLETED: set(),
+    }
+
     client = models.ForeignKey(
         "users.ClientProfile", on_delete=models.CASCADE, related_name="service_records"
     )
@@ -42,3 +48,8 @@ class ServiceRecord(models.Model):
         ordering = ["-scheduled_at"]
         verbose_name = "Service Record"
         verbose_name_plural = "Service Records"
+
+    def transition(self, new_status: int):
+        from appointments.domain.service_record.transitions import transition_impl
+
+        return transition_impl(self, new_status)
