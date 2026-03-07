@@ -1,4 +1,5 @@
 from django.urls import path
+
 from wallets.api.views import ClientWalletView
 
 urlpatterns = [

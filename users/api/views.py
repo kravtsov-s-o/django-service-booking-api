@@ -3,7 +3,7 @@ from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from users.api.serializers import MeSerializer, ChangePasswordSerializer
+from users.api.serializers import ChangePasswordSerializer, MeSerializer
 
 
 # Create your views here.
