@@ -8,6 +8,7 @@ def create_wallet_transaction(wallet, amount, type, service_record=None):
         wallet=wallet,
         amount=amount,
         type=type,
+        balance_after=new_balance,
         service_record=service_record,
     )
 
