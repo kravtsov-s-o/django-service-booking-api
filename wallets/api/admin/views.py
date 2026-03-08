@@ -29,7 +29,5 @@ class AdminClientWalletTransactionViewSet(
 
         with transaction.atomic():
             create_wallet_transaction(
-                wallet=wallet,
-                amount=amount,
-                type=transaction_type
+                wallet=wallet, amount=amount, type=transaction_type
             )
