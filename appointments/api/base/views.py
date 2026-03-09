@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
 from appointments.models import ServiceRecord
+from appointments.services.completion import complete_service_record
 
 
 class BaseServiceRecordViewSet(GenericViewSet):
@@ -26,6 +27,18 @@ class BaseServiceRecordViewSet(GenericViewSet):
 
         try:
             appointment.transition(ServiceRecord.Status.CANCELLED)
+        except ValidationError as e:
+            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(status=status.HTTP_200_OK)
+
+class AdminSpecialistServiceRecordViewSet(BaseServiceRecordViewSet):
+    @action(detail=True, methods=["post"])
+    def complete(self, request, pk=None):
+        appointment = self.get_object()
+
+        try:
+            complete_service_record(appointment)
         except ValidationError as e:
             return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 

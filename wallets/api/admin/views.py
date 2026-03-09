@@ -22,7 +22,6 @@ class AdminClientWalletTransactionViewSet(
     )
 
     def perform_create(self, serializer):
-        # serializer.save(type=ClientWalletTransaction.Type.MANUAL_TOPUP)
         wallet = serializer.validated_data["wallet"]
         amount = serializer.validated_data["amount"]
         transaction_type = ClientWalletTransaction.Type.MANUAL_TOPUP

@@ -5,27 +5,15 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from appointments.api.admin.serializers import AdminServiceRecordSerializer
-from appointments.api.base.views import BaseServiceRecordViewSet
-from appointments.models import ServiceRecord
+from appointments.api.base.views import AdminSpecialistServiceRecordViewSet
 from users.api.admin.permissions import IsAdminUserRole
 
 
-class AdminServiceRecordViewSet(BaseServiceRecordViewSet, viewsets.ModelViewSet):
+class AdminServiceRecordViewSet(AdminSpecialistServiceRecordViewSet, viewsets.ModelViewSet):
     serializer_class = AdminServiceRecordSerializer
     permission_classes = (IsAuthenticated, IsAdminUserRole)
 
     select_related_fields = ("service", "specialist__user", "client__user")
-
-    @action(detail=True, methods=["post"])
-    def complete(self, request, pk=None):
-        appointment = self.get_object()
-
-        try:
-            appointment.transition(ServiceRecord.Status.COMPLETED)
-        except ValidationError as e:
-            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-        return Response(status=status.HTTP_200_OK)
 
     @action(detail=True, methods=["post"])
     def refund(self, request, pk=None):

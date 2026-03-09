@@ -16,10 +16,4 @@ def transition_impl(record: ServiceRecord, new_status: int):
     ):
         raise ValidationError("Cannot complete appointment before scheduled time.")
 
-    record._allow_status_change = True
-
-    try:
-        record.status = new_status
-        record.save(update_fields=["status", "updated_at"])
-    finally:
-        record._allow_status_change = False
+    return True
