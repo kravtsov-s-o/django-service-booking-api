@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "drf_spectacular",
     "users",
     "services",
     "appointments",
@@ -133,4 +134,11 @@ AUTH_USER_MODEL = "users.User"
 
 REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "core.api.pagination.DefaultPagination",
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Service Booking API",
+    "DESCRIPTION": "API for booking services, wallet management and analytics",
+    "VERSION": "0.1.0",
 }

@@ -15,7 +15,8 @@ dependencies = [
     "psycopg2-binary (>=2.9.11,<3.0.0)",
     "asgiref (>=3.11.1,<4.0.0)",
     "sqlparse (>=0.5.5,<0.6.0)",
-    "tzdata (>=2025.3,<2026.0)"
+    "tzdata (>=2025.3,<2026.0)",
+    "drf-spectacular (>=0.29.0,<0.30.0)"
 ]
 
 
