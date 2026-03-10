@@ -1,4 +1,3 @@
-from django.views.generic import ListView
 from rest_framework.mixins import ListModelMixin
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response

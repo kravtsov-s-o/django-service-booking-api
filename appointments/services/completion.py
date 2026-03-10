@@ -16,20 +16,18 @@ def complete_service_record(appointment):
             service_price = appointment.service.base_price
 
             specialist_service = SpecialistService.objects.get(
-                service=appointment.service,
-                specialist=appointment.specialist
+                service=appointment.service, specialist=appointment.specialist
             )
 
             specialist_payout = calculate_specialist_payout(
-                service_price,
-                specialist_service
+                service_price, specialist_service
             )
 
             create_wallet_transaction(
                 wallet=appointment.client.client_wallet,
                 amount=-service_price,
                 type=ClientWalletTransaction.Type.SERVICE_CHARGE,
-                service_record=appointment
+                service_record=appointment,
             )
 
             appointment.service_price = service_price
@@ -37,10 +35,12 @@ def complete_service_record(appointment):
             appointment.completed_at = timezone.now()
             appointment.status = target_status
 
-            appointment.save(update_fields=[
-                "status",
-                "service_price",
-                "specialist_payout",
-                "completed_at",
-                "updated_at",
-            ])
+            appointment.save(
+                update_fields=[
+                    "status",
+                    "service_price",
+                    "specialist_payout",
+                    "completed_at",
+                    "updated_at",
+                ]
+            )

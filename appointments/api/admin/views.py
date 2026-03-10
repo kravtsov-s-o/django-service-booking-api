@@ -9,7 +9,9 @@ from appointments.api.base.views import AdminSpecialistServiceRecordViewSet
 from users.api.admin.permissions import IsAdminUserRole
 
 
-class AdminServiceRecordViewSet(AdminSpecialistServiceRecordViewSet, viewsets.ModelViewSet):
+class AdminServiceRecordViewSet(
+    AdminSpecialistServiceRecordViewSet, viewsets.ModelViewSet
+):
     serializer_class = AdminServiceRecordSerializer
     permission_classes = (IsAuthenticated, IsAdminUserRole)
 

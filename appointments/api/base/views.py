@@ -32,6 +32,7 @@ class BaseServiceRecordViewSet(GenericViewSet):
 
         return Response(status=status.HTTP_200_OK)
 
+
 class AdminSpecialistServiceRecordViewSet(BaseServiceRecordViewSet):
     @action(detail=True, methods=["post"])
     def complete(self, request, pk=None):
