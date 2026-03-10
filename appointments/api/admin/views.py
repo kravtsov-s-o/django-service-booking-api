@@ -6,6 +6,7 @@ from rest_framework.response import Response
 
 from appointments.api.admin.serializers import AdminServiceRecordSerializer
 from appointments.api.base.views import AdminSpecialistServiceRecordViewSet
+from appointments.services.refund import refund
 from users.api.admin.permissions import IsAdminUserRole
 
 
@@ -19,10 +20,10 @@ class AdminServiceRecordViewSet(
 
     @action(detail=True, methods=["post"])
     def refund(self, request, pk=None):
-        # appointment = self.get_object()
+        appointment = self.get_object()
 
         try:
-            pass
+            refund(appointment)
         except ValidationError as e:
             return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
