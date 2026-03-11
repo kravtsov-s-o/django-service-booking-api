@@ -1,4 +1,5 @@
 from django.db import transaction
+from drf_spectacular.utils import extend_schema
 from rest_framework.mixins import CreateModelMixin, ListModelMixin
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import GenericViewSet
@@ -9,9 +10,20 @@ from wallets.models import ClientWalletTransaction
 from wallets.services.transactions import create_wallet_transaction
 
 
+@extend_schema(tags=["Admin: Wallet"], summary="Admin wallet transactions management")
 class AdminClientWalletTransactionViewSet(
     GenericViewSet, ListModelMixin, CreateModelMixin
 ):
+    """
+    Admin wallet transaction management.
+
+    Endpoints:
+    - GET /admin/wallet-transactions/  — list all wallet transactions
+    - POST /admin/wallet-transactions/ — manually top up a client wallet
+
+    Permissions:
+    Admin users only.
+    """
     permission_classes = [IsAuthenticated, IsAdminUserRole]
     serializer_class = AdminClientWalletTransactionSerializer
     queryset = ClientWalletTransaction.objects.all().select_related(
@@ -28,5 +40,5 @@ class AdminClientWalletTransactionViewSet(
 
         with transaction.atomic():
             create_wallet_transaction(
-                wallet=wallet, amount=amount, type=transaction_type
+                wallet=wallet, amount=amount, transaction_type=transaction_type
             )

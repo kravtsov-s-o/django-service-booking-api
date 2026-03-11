@@ -10,6 +10,16 @@ from appointments.services.completion import complete_service_record
 
 
 class BaseServiceRecordViewSet(GenericViewSet):
+    """
+    Base viewset for service appointment operations.
+
+    Provides shared behaviour for appointment endpoints:
+    - common queryset configuration
+    - appointment cancellation
+
+    Specialized viewsets extend this class and add
+    role-specific logic (client, specialist, admin).
+    """
     queryset = ServiceRecord.objects.all()
     select_related_fields = ("service",)
 
@@ -23,6 +33,11 @@ class BaseServiceRecordViewSet(GenericViewSet):
 
     @action(detail=True, methods=["post"], url_path="cancel")
     def cancel(self, request, pk=None):
+        """
+        Cancel an appointment.
+
+        Allowed only if the appointment can transition to CANCELLED status.
+        """
         appointment = self.get_object()
 
         try:
@@ -34,8 +49,22 @@ class BaseServiceRecordViewSet(GenericViewSet):
 
 
 class AdminSpecialistServiceRecordViewSet(BaseServiceRecordViewSet):
+    """
+    Shared viewset for specialist and admin appointment completion.
+
+    Provides the `complete` action used by both specialist
+    and admin endpoints to finalize a service appointment.
+    """
     @action(detail=True, methods=["post"])
     def complete(self, request, pk=None):
+        """
+        Complete a service appointment.
+
+        Triggers the business workflow that:
+        - charges the client's wallet
+        - records financial snapshots
+        - transitions the appointment to COMPLETED
+        """
         appointment = self.get_object()
 
         try:
@@ -52,6 +81,12 @@ class UserScopedServiceRecordViewSet(
     ListModelMixin,
     RetrieveModelMixin,
 ):
+    """
+    Base viewset for user-scoped appointment endpoints.
+
+    Restricts queries and creation to the current user's profile.
+    Used for client and specialist appointment APIs.
+    """
     lookup_user_field = None
 
     def get_profile(self):

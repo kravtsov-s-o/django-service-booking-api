@@ -8,7 +8,21 @@ from wallets.models import ClientWalletTransaction
 from wallets.services.transactions import create_wallet_transaction
 
 
-def complete_service_record(appointment):
+def complete_service_record(appointment: ServiceRecord):
+    """
+    Complete a service appointment and charge the client's wallet.
+
+    Workflow:
+    1. Validate that the appointment can transition to COMPLETED.
+    2. Calculate the service price and specialist payout.
+    3. Charge the client wallet.
+    4. Save financial snapshots on the appointment:
+       - service_price
+       - specialist_payout
+       - completed_at
+
+    All operations are executed inside a database transaction.
+    """
     target_status = ServiceRecord.Status.COMPLETED
 
     if appointment.transition(target_status):
@@ -26,7 +40,7 @@ def complete_service_record(appointment):
             create_wallet_transaction(
                 wallet=appointment.client.client_wallet,
                 amount=-service_price,
-                type=ClientWalletTransaction.Type.SERVICE_CHARGE,
+                transaction_type=ClientWalletTransaction.Type.SERVICE_CHARGE,
                 service_record=appointment,
             )
 

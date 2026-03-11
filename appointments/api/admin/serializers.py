@@ -6,7 +6,13 @@ from appointments.models import ServiceRecord
 
 class AdminServiceRecordSerializer(BaseServiceRecordSerializer):
     """
-    Admin serializer.
+    Serializer for managing service appointments in the admin API.
+
+    Provides full visibility of appointments including:
+    - client and specialist participants
+    - financial data recorded after service completion
+
+    Booking validation rules are inherited from BaseServiceRecordSerializer.
     """
 
     client_name = serializers.CharField(

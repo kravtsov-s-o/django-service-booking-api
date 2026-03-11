@@ -7,6 +7,17 @@ from wallets.services.transactions import create_wallet_transaction
 
 
 def refund(appointment: ServiceRecord):
+    """
+    Refund the client for a completed service.
+
+    Conditions:
+    - Appointment must have COMPLETED status.
+    - Refund can only be processed once.
+    - Service price must be recorded.
+
+    The refund creates a wallet transaction that returns
+    the service amount to the client's wallet.
+    """
     if appointment.status != ServiceRecord.Status.COMPLETED:
         raise ValidationError("Refund allowed only for completed service")
 
@@ -26,6 +37,6 @@ def refund(appointment: ServiceRecord):
         return create_wallet_transaction(
             wallet=client_wallet,
             amount=appointment_price,
-            type=ClientWalletTransaction.Type.REFUND,
+            transaction_type=ClientWalletTransaction.Type.REFUND,
             service_record=appointment,
         )

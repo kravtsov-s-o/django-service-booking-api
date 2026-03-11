@@ -6,7 +6,10 @@ from appointments.models import ServiceRecord
 
 class SpecialistServiceRecordSerializer(BaseServiceRecordSerializer):
     """
-    Specialist serializers.
+    Serializer for specialist appointment operations.
+
+    Specialists can manage appointments with clients.
+    Includes client information for schedule visibility.
     """
 
     client_name = serializers.CharField(

@@ -4,6 +4,12 @@ from services.models import Service, SpecialistService
 
 
 class AdminServiceSerializer(serializers.ModelSerializer):
+    """
+    Serializer for managing services in the admin API.
+    Deleting a service archives it by setting is_active=False.
+
+    Allows administrators to create, update and archive services.
+    """
     class Meta:
         model = Service
         fields = (
@@ -19,6 +25,16 @@ class AdminServiceSerializer(serializers.ModelSerializer):
 
 
 class AdminSpecialistServiceSerializer(serializers.ModelSerializer):
+    """
+    Serializer for managing specialist service assignments.
+
+    Defines which services a specialist can provide and
+    how their payout is calculated.
+
+    Payout rules:
+    - FULL  → specialist receives the full service price
+    - FIXED → specialist receives a fixed payout_value
+    """
     specialist_name = serializers.CharField(
         source="specialist.user.full_name", read_only=True
     )

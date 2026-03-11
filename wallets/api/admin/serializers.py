@@ -4,6 +4,17 @@ from wallets.models import ClientWalletTransaction
 
 
 class AdminClientWalletTransactionSerializer(serializers.ModelSerializer):
+    """
+    Serializer for wallet transactions in the admin API.
+
+    Allows administrators to:
+    - view client wallet transactions
+    - manually top up client wallets
+
+    Restrictions:
+    - Only positive amounts are allowed.
+    - Transactions created through this serializer are manual wallet top-ups.
+    """
     client_name = serializers.CharField(source="wallet.client.user", read_only=True)
     type_display = serializers.CharField(source="get_type_display", read_only=True)
 
