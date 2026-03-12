@@ -5,11 +5,11 @@ from wallets.models import ClientWallet, ClientWalletTransaction
 
 
 def create_wallet_transaction(
-        *,
-        wallet: ClientWallet,
-        amount: Decimal,
-        transaction_type: int,
-        service_record: ServiceRecord | None = None
+    *,
+    wallet: ClientWallet,
+    amount: Decimal,
+    transaction_type: int,
+    service_record: ServiceRecord | None = None,
 ) -> ClientWalletTransaction:
     """
     Create a wallet transaction and update the client's wallet balance.

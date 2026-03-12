@@ -4,8 +4,7 @@ from services.models import SpecialistService
 
 
 def calculate_specialist_payout(
-        service_price: Decimal,
-        specialist_service: SpecialistService
+    service_price: Decimal, specialist_service: SpecialistService
 ) -> Decimal:
     """
     Calculate the specialist payout for a service.

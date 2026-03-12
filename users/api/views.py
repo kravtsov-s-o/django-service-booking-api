@@ -7,8 +7,9 @@ from users.api.serializers import ChangePasswordSerializer, MeSerializer
 
 
 # Create your views here.
-@extend_schema(tags=["Profile"],
-    summary="Retrieve or update authenticated user profile")
+@extend_schema(
+    tags=["Profile"], summary="Retrieve or update authenticated user profile"
+)
 class MeView(generics.RetrieveUpdateAPIView):
     """
     Retrieve and update the authenticated user's profile.
@@ -41,6 +42,7 @@ class ChangePasswordView(APIView):
     Permissions:
     Authenticated users only.
     """
+
     permission_classes = (permissions.IsAuthenticated,)
 
     def post(self, request, *args, **kwargs):

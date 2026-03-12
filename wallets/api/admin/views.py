@@ -24,6 +24,7 @@ class AdminClientWalletTransactionViewSet(
     Permissions:
     Admin users only.
     """
+
     permission_classes = [IsAuthenticated, IsAdminUserRole]
     serializer_class = AdminClientWalletTransactionSerializer
     queryset = ClientWalletTransaction.objects.all().select_related(

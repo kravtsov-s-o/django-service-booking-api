@@ -14,6 +14,7 @@ class ServicesViewSet(viewsets.ReadOnlyModelViewSet):
 
     Provides read-only access to active services available for booking.
     """
+
     queryset = Service.objects.filter(is_active=True).order_by("title")
     serializer_class = ServicesSerializer
     permission_classes = (AllowAny,)

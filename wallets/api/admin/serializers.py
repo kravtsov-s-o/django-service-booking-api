@@ -15,6 +15,7 @@ class AdminClientWalletTransactionSerializer(serializers.ModelSerializer):
     - Only positive amounts are allowed.
     - Transactions created through this serializer are manual wallet top-ups.
     """
+
     client_name = serializers.CharField(source="wallet.client.user", read_only=True)
     type_display = serializers.CharField(source="get_type_display", read_only=True)
 

@@ -10,6 +10,7 @@ class ServicesSerializer(serializers.ModelSerializer):
     Includes basic service information such as title,
     description and base price.
     """
+
     class Meta:
         model = Service
         fields = (

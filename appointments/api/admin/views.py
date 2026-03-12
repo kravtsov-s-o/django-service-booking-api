@@ -28,6 +28,7 @@ class AdminServiceRecordViewSet(
     Permissions:
     Admin users only.
     """
+
     serializer_class = AdminServiceRecordSerializer
     permission_classes = (IsAuthenticated, IsAdminUserRole)
 

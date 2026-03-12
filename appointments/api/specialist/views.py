@@ -22,6 +22,7 @@ class SpecialistServiceRecordViewSet(
     - cancel appointments
     - complete services
     """
+
     serializer_class = SpecialistServiceRecordSerializer
     permission_classes = (IsAuthenticated, IsSpecialistUser)
 

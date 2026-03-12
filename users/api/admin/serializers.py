@@ -91,4 +91,5 @@ class AdminSetPasswordSerializer(serializers.Serializer):
     """
     Serializer used by administrators to reset a user's password.
     """
+
     new_password = serializers.CharField(required=True, write_only=True)

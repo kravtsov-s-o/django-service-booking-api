@@ -20,6 +20,7 @@ class BaseServiceRecordViewSet(GenericViewSet):
     Specialized viewsets extend this class and add
     role-specific logic (client, specialist, admin).
     """
+
     queryset = ServiceRecord.objects.all()
     select_related_fields = ("service",)
 
@@ -55,6 +56,7 @@ class AdminSpecialistServiceRecordViewSet(BaseServiceRecordViewSet):
     Provides the `complete` action used by both specialist
     and admin endpoints to finalize a service appointment.
     """
+
     @action(detail=True, methods=["post"])
     def complete(self, request, pk=None):
         """
@@ -87,6 +89,7 @@ class UserScopedServiceRecordViewSet(
     Restricts queries and creation to the current user's profile.
     Used for client and specialist appointment APIs.
     """
+
     lookup_user_field = None
 
     def get_profile(self):

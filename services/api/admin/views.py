@@ -10,8 +10,7 @@ from services.models import Service, SpecialistService
 from users.api.admin.permissions import IsAdminUserRole
 
 
-@extend_schema(tags=["Admin: Services"],
-    summary="Admin service management")
+@extend_schema(tags=["Admin: Services"], summary="Admin service management")
 class AdminServicesViewSet(viewsets.ModelViewSet):
     """
     Admin service management.
@@ -20,6 +19,7 @@ class AdminServicesViewSet(viewsets.ModelViewSet):
 
     Deleting a service archives it by setting is_active=False.
     """
+
     queryset = Service.objects.all()
     serializer_class = AdminServiceSerializer
     permission_classes = (permissions.IsAuthenticated, IsAdminUserRole)
@@ -41,6 +41,7 @@ class AdminSpecialistServicesViewSet(viewsets.ModelViewSet):
     Allows administrators to assign services to specialists
     and configure payout rules.
     """
+
     queryset = SpecialistService.objects.select_related(
         "specialist__user", "service"
     ).filter(is_active=True)

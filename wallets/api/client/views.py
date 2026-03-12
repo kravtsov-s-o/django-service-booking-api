@@ -14,8 +14,9 @@ from wallets.models import ClientWalletTransaction
 
 
 # Create your views here.
-@extend_schema(tags=["Profile: Client Wallet"],
-    summary="Retrieve client wallet balance")
+@extend_schema(
+    tags=["Profile: Client Wallet"], summary="Retrieve client wallet balance"
+)
 class ClientWalletView(APIView):
     """
     Retrieve the wallet balance for the authenticated client.
@@ -25,6 +26,7 @@ class ClientWalletView(APIView):
     Permissions:
     Client users only.
     """
+
     permission_classes = [IsAuthenticated, IsClientUser]
 
     def get(self, request):
@@ -33,8 +35,9 @@ class ClientWalletView(APIView):
         return Response(serializer.data)
 
 
-@extend_schema(tags=["Profile: Client Wallet"],
-    summary="Retrieve for client wallet transactions")
+@extend_schema(
+    tags=["Profile: Client Wallet"], summary="Retrieve for client wallet transactions"
+)
 class ClientWalletTransactionViewSet(GenericViewSet, ListModelMixin):
     """
     List wallet transactions for the authenticated client.
@@ -47,6 +50,7 @@ class ClientWalletTransactionViewSet(GenericViewSet, ListModelMixin):
     Permissions:
     Client users only.
     """
+
     permission_classes = [IsAuthenticated, IsClientUser]
     serializer_class = ClientWalletTransactionSerializer
 

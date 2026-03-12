@@ -10,6 +10,7 @@ class AdminServiceSerializer(serializers.ModelSerializer):
 
     Allows administrators to create, update and archive services.
     """
+
     class Meta:
         model = Service
         fields = (
@@ -35,6 +36,7 @@ class AdminSpecialistServiceSerializer(serializers.ModelSerializer):
     - FULL  → specialist receives the full service price
     - FIXED → specialist receives a fixed payout_value
     """
+
     specialist_name = serializers.CharField(
         source="specialist.user.full_name", read_only=True
     )

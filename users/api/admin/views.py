@@ -35,6 +35,7 @@ class AdminUserViewSet(viewsets.ModelViewSet):
     Permissions:
     Admin users only.
     """
+
     permission_classes = (permissions.IsAuthenticated, IsAdminUserRole)
     queryset = User.objects.all().order_by("-id")
 

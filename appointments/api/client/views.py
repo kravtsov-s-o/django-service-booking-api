@@ -20,6 +20,7 @@ class ClientServiceRecordViewSet(UserScopedServiceRecordViewSet):
     Permissions:
     Client users only.
     """
+
     serializer_class = ClientServiceRecordSerializer
     permission_classes = (IsAuthenticated, IsClientUser)
 
