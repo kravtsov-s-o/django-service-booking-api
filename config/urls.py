@@ -23,7 +23,8 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path("api/docs/", SpectacularSwaggerView.as_view(url_name="schema")),
-    path("api-auth/", include("rest_framework.urls")),
+    # Login
+    path("api/auth/", include("users.api.auth.urls")),
     # Profile's
     path("api/v1/", include("users.api.urls")),
     # Only for Clients
