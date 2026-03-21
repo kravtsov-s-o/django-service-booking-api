@@ -9,7 +9,7 @@ from appointments.api.specialist.serializers import SpecialistServiceRecordSeria
 from users.api.permissions import IsSpecialistUser
 
 
-@extend_schema(tags=["ЗкщашдуЖ Specialist Schedule"])
+@extend_schema(tags=["Profile: Specialist Schedule"])
 class SpecialistServiceRecordViewSet(
     AdminSpecialistServiceRecordViewSet, UserScopedServiceRecordViewSet
 ):

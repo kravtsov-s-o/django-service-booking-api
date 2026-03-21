@@ -44,12 +44,6 @@ class AdminUserCreateSerializer(serializers.ModelSerializer):
         user.set_password(password)
         user.save()
 
-        if user.role == User.Role.SPECIALIST:
-            SpecialistProfile.objects.create(user=user)
-
-        elif user.role == User.Role.CLIENT:
-            ClientProfile.objects.create(user=user)
-
         return user
 
 
