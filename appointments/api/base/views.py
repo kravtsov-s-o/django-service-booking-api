@@ -42,7 +42,13 @@ class BaseServiceRecordViewSet(GenericViewSet):
         appointment = self.get_object()
 
         try:
-            appointment.transition(ServiceRecord.Status.CANCELLED)
+            if appointment.can_transition(ServiceRecord.Status.CANCELLED):
+                appointment.status = ServiceRecord.Status.CANCELLED
+                appointment.save(
+                    update_fields=[
+                        "status"
+                    ]
+                )
         except ValidationError as e:
             return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -97,3 +103,9 @@ class UserScopedServiceRecordViewSet(
 
     def perform_create(self, serializer):
         serializer.save(**{self.lookup_user_field: self.get_profile()})
+
+    def get_queryset(self):
+        return (
+            super()
+            .get_queryset().filter(**{self.lookup_user_field: self.get_profile()})
+        )
