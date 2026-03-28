@@ -23,8 +23,8 @@ class SpecialistServiceRecordSerializer(BaseServiceRecordSerializer):
 
     def validate(self, attrs):
         specialist = self.context["request"].user.specialist_profile
-        service = attrs["service"]
-        scheduled_at = attrs["scheduled_at"]
+        service = attrs.get("service", getattr(self.instance, "service", None))
+        scheduled_at = attrs.get("scheduled_at", getattr(self.instance, "scheduled_at", None))
 
         self.validate_booking(specialist, service, scheduled_at)
 

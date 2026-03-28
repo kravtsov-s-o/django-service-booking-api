@@ -63,9 +63,9 @@ class AdminSpecialistServiceSerializer(serializers.ModelSerializer):
         read_only_fields = ("id", "created_at", "updated_at")
 
     def validate(self, attrs):
-        service = attrs["service"]
-        payout_type = attrs["payout_type"]
-        payout_value = attrs["payout_value"]
+        service = attrs.get("service", getattr(self.instance, "service", None))
+        payout_type = attrs.get("payout_type", getattr(self.instance, "payout_type", None))
+        payout_value = attrs.get("payout_value", getattr(self.instance, "payout_value", None))
 
         if service and not service.is_active:
             raise serializers.ValidationError(
