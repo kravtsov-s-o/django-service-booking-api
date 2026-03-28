@@ -25,7 +25,7 @@ def complete_service_record(appointment: ServiceRecord):
     """
     target_status = ServiceRecord.Status.COMPLETED
 
-    if appointment.transition(target_status):
+    if appointment.can_transition(target_status):
         with transaction.atomic():
             service_price = appointment.service.base_price
 
