@@ -39,7 +39,6 @@ class AdminClientWalletTransactionViewSet(
         amount = serializer.validated_data["amount"]
         transaction_type = ClientWalletTransaction.Type.MANUAL_TOPUP
 
-        with transaction.atomic():
-            create_wallet_transaction(
-                wallet=wallet, amount=amount, transaction_type=transaction_type
-            )
+        create_wallet_transaction(
+            wallet_id=wallet.pk, amount=amount, transaction_type=transaction_type
+        )

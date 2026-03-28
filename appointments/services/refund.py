@@ -31,12 +31,10 @@ def refund(appointment: ServiceRecord):
         raise ValidationError("Service price not recorded")
 
     appointment_price = appointment.service_price
-    client_wallet = appointment.client.client_wallet
 
-    with transaction.atomic():
-        return create_wallet_transaction(
-            wallet=client_wallet,
-            amount=appointment_price,
-            transaction_type=ClientWalletTransaction.Type.REFUND,
-            service_record=appointment,
-        )
+    return create_wallet_transaction(
+        wallet_id=appointment.client.client_wallet.pk,
+        amount=appointment_price,
+        transaction_type=ClientWalletTransaction.Type.REFUND,
+        service_record=appointment,
+    )

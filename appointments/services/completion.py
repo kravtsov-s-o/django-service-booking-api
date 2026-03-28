@@ -38,7 +38,7 @@ def complete_service_record(appointment: ServiceRecord):
             )
 
             create_wallet_transaction(
-                wallet=appointment.client.client_wallet,
+                wallet_id=appointment.client.client_wallet.pk,
                 amount=-service_price,
                 transaction_type=ClientWalletTransaction.Type.SERVICE_CHARGE,
                 service_record=appointment,
