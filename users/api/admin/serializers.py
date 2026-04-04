@@ -2,8 +2,6 @@ from django.contrib.auth import get_user_model
 from django.db import transaction
 from rest_framework import serializers
 
-from users.models import ClientProfile, SpecialistProfile
-
 User = get_user_model()
 
 

@@ -45,7 +45,9 @@ class AdminServiceRecordSerializer(BaseServiceRecordSerializer):
     def validate(self, attrs):
         specialist = attrs.get("specialist", getattr(self.instance, "specialist", None))
         service = attrs.get("service", getattr(self.instance, "service", None))
-        scheduled_at = attrs.get("scheduled_at", getattr(self.instance, "scheduled_at", None))
+        scheduled_at = attrs.get(
+            "scheduled_at", getattr(self.instance, "scheduled_at", None)
+        )
 
         self.validate_booking(specialist, service, scheduled_at)
 

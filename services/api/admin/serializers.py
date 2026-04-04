@@ -64,8 +64,12 @@ class AdminSpecialistServiceSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         service = attrs.get("service", getattr(self.instance, "service", None))
-        payout_type = attrs.get("payout_type", getattr(self.instance, "payout_type", None))
-        payout_value = attrs.get("payout_value", getattr(self.instance, "payout_value", None))
+        payout_type = attrs.get(
+            "payout_type", getattr(self.instance, "payout_type", None)
+        )
+        payout_value = attrs.get(
+            "payout_value", getattr(self.instance, "payout_value", None)
+        )
 
         if service and not service.is_active:
             raise serializers.ValidationError(

@@ -33,7 +33,9 @@ def test_client_profile_created(client_profile):
 def test_client_has_profile(client_user):
     assert client_user.client_profile is not None
 
-    with pytest.raises(client_user.__class__.specialist_profile.RelatedObjectDoesNotExist):
+    with pytest.raises(
+        client_user.__class__.specialist_profile.RelatedObjectDoesNotExist
+    ):
         client_user.specialist_profile
 
 
@@ -55,7 +57,9 @@ def test_specialist_profile_created(specialist_profile):
 def test_specialist_has_profile(specialist_user):
     assert specialist_user.specialist_profile is not None
 
-    with pytest.raises(specialist_user.__class__.client_profile.RelatedObjectDoesNotExist):
+    with pytest.raises(
+        specialist_user.__class__.client_profile.RelatedObjectDoesNotExist
+    ):
         specialist_user.client_profile
 
 

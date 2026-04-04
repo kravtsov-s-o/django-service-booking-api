@@ -1,5 +1,4 @@
 from django.core.exceptions import ValidationError
-from django.db import transaction
 
 from appointments.models import ServiceRecord
 from wallets.models import ClientWalletTransaction

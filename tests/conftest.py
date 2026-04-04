@@ -25,6 +25,7 @@ def user_factory(db):
 
     return create_user
 
+
 @pytest.fixture
 def superuser(db):
     """
