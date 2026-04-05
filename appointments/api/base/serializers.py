@@ -9,8 +9,16 @@ from services.models import SpecialistService
 
 class BaseServiceRecordSerializer(serializers.ModelSerializer):
     """
-    Contains booking business rules.
-    Client/Specialist serializers only provide participants.
+    Base serializer for service appointments.
+
+    Contains shared booking validation rules such as:
+    - service availability
+    - specialist availability
+    - time slot conflicts
+    - scheduling restrictions
+
+    Role-specific serializers (client, specialist, admin)
+    extend this serializer and only define participants.
     """
 
     service_title = serializers.CharField(

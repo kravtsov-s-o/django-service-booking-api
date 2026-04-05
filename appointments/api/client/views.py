@@ -1,3 +1,4 @@
+from drf_spectacular.utils import extend_schema
 from rest_framework.permissions import IsAuthenticated
 
 from appointments.api.base.views import UserScopedServiceRecordViewSet
@@ -6,7 +7,20 @@ from users.api.permissions import IsClientUser
 
 
 # Create your views here.
+@extend_schema(tags=["Profile: Client Appointments"])
 class ClientServiceRecordViewSet(UserScopedServiceRecordViewSet):
+    """
+    Client appointment management.
+
+    Allows clients to:
+    - create service appointments
+    - view their appointment history
+    - cancel scheduled appointments
+
+    Permissions:
+    Client users only.
+    """
+
     serializer_class = ClientServiceRecordSerializer
     permission_classes = (IsAuthenticated, IsClientUser)
 

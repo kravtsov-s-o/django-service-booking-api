@@ -1,25 +1,27 @@
-# from django.shortcuts import render
+from drf_spectacular.utils import extend_schema
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from users.api.serializers import MeSerializer, ChangePasswordSerializer
+from users.api.serializers import ChangePasswordSerializer, MeSerializer
 
 
 # Create your views here.
+@extend_schema(
+    tags=["Profile"], summary="Retrieve or update authenticated user profile"
+)
 class MeView(generics.RetrieveUpdateAPIView):
     """
-    Retrieve and update the currently authenticated user.
+    Retrieve and update the authenticated user's profile.
 
     GET:
-    Returns information about the currently authenticated user.
+    Return information about the current authenticated user.
 
     PATCH:
-    Allows the user to update personal data.
-    Role and permissions cannot be changed.
+    Update user personal data. Role and permissions cannot be changed.
 
-    Access:
-    Only available to authenticated users.
+    Permissions:
+    Authenticated users only.
     """
 
     serializer_class = MeSerializer
@@ -29,7 +31,18 @@ class MeView(generics.RetrieveUpdateAPIView):
         return self.request.user
 
 
+@extend_schema(tags=["Profile: Password Reset"], summary="Change user password")
 class ChangePasswordView(APIView):
+    """
+    Change the password of the authenticated user.
+
+    POST:
+    Validate the current password and update it with a new one.
+
+    Permissions:
+    Authenticated users only.
+    """
+
     permission_classes = (permissions.IsAuthenticated,)
 
     def post(self, request, *args, **kwargs):

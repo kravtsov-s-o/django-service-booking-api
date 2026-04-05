@@ -1,6 +1,63 @@
+[project]
+name = "django-service-booking-api"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "neksen",email = "s.kravtsov@hotmail.com"}
+]
+license = {text = "MIT License"}
+readme = "README.md"
+requires-python = ">=3.12,<4.0"
+dependencies = [
+    "django (>=6.0.3,<7.0.0)",
+    "djangorestframework (>=3.16.1,<4.0.0)",
+    "django-environ (>=0.13.0,<0.14.0)",
+    "psycopg2-binary (>=2.9.11,<3.0.0)",
+    "asgiref (>=3.11.1,<4.0.0)",
+    "sqlparse (>=0.5.5,<0.6.0)",
+    "tzdata (>=2025.3,<2026.0)",
+    "drf-spectacular (>=0.29.0,<0.30.0)",
+    "djangorestframework-simplejwt (>=5.5.1,<6.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[dependency-groups]
+dev = [
+    "black (>=26.3.0,<27.0.0)",
+    "ruff (>=0.15.5,<0.16.0)",
+    "pytest (>=9.0.2,<10.0.0)",
+    "pytest-django (>=4.12.0,<5.0.0)",
+    "pytest-cov (>=7.0.0,<8.0.0)"
+]
+
+[tool.poetry]
+package-mode = false
+
+
+[tool.ruff]
+line-length = 88
+exclude = [
+    "migrations",
+    "__pycache__",
+    "venv",
+    ".venv",
+    "env"
+]
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+ignore = ["E203"]
+
+[tool.ruff.lint.per-file-ignores]
+"config/settings.py" = ["E501"]
+
 [tool.black]
 line-length = 88
-target-version = ['py313']
+target-version = ["py312"]
 exclude = '''
 /(
     migrations

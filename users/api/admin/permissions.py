@@ -20,7 +20,7 @@ class IsAdminUserRole(BasePermission):
         if user.is_superuser:
             return True
 
-        if request.user == User.Role.EMPLOYEE:
+        if user.role == User.Role.EMPLOYEE:
             return True
 
         if user.role == User.Role.SPECIALIST:

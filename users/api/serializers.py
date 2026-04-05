@@ -18,5 +18,9 @@ class MeSerializer(serializers.ModelSerializer):
 
 
 class ChangePasswordSerializer(serializers.Serializer):
+    """
+    Serializer for changing password for the current user.
+    """
+
     current_password = serializers.CharField(required=True)
     new_password = serializers.CharField(required=True, min_length=8)

@@ -1,5 +1,6 @@
 from django.urls import path
-from users.api.views import MeView, ChangePasswordView
+
+from users.api.views import ChangePasswordView, MeView
 
 urlpatterns = [
     path("me/", MeView.as_view(), name="me"),

@@ -2,12 +2,22 @@ from django.contrib.auth import get_user_model
 from django.db import transaction
 from rest_framework import serializers
 
-from users.models import SpecialistProfile, ClientProfile
-
 User = get_user_model()
 
 
 class AdminUserCreateSerializer(serializers.ModelSerializer):
+    """
+    Serializer for creating users through the admin API.
+
+    Used by administrators to create new users in the system.
+
+    Behaviour:
+    - Password is write-only and is hashed before saving.
+    - Depending on the selected role, the corresponding profile is created:
+        * SpecialistProfile for specialists
+        * ClientProfile for clients
+    """
+
     password = serializers.CharField(write_only=True)
 
     class Meta:
@@ -32,16 +42,20 @@ class AdminUserCreateSerializer(serializers.ModelSerializer):
         user.set_password(password)
         user.save()
 
-        if user.role == User.Role.SPECIALIST:
-            SpecialistProfile.objects.create(user=user)
-
-        elif user.role == User.Role.CLIENT:
-            ClientProfile.objects.create(user=user)
-
         return user
 
 
 class AdminUserUpdateSerializer(serializers.ModelSerializer):
+    """
+    Serializer for updating user information via the admin API.
+
+    Allows updating basic user fields such as:
+    email, username, first name, last name, and active status.
+
+    Restrictions:
+    - The user role cannot be changed once the user is created.
+    """
+
     role = serializers.CharField(source="get_role_display", read_only=True)
 
     class Meta:
@@ -66,4 +80,8 @@ class AdminUserUpdateSerializer(serializers.ModelSerializer):
 
 
 class AdminSetPasswordSerializer(serializers.Serializer):
-    new_password = serializers.CharField(required=True)
+    """
+    Serializer used by administrators to reset a user's password.
+    """
+
+    new_password = serializers.CharField(required=True, write_only=True)
