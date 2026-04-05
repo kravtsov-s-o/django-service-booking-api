@@ -1,9 +1,17 @@
 import pytest
 from django.contrib.auth import get_user_model
+from django.utils import timezone
+
+from appointments.models import ServiceRecord
+from services.models import Service, SpecialistService
+from wallets.models import ClientWalletTransaction
 
 User = get_user_model()
 
 
+# ============================================================
+# USERS
+# ============================================================
 @pytest.fixture
 def user_factory(db):
     """
@@ -44,7 +52,9 @@ def client_user(user_factory):
     Minimal client user.
     Profile + wallet should be created via signals.
     """
-    return user_factory(role=User.Role.CLIENT)
+    return user_factory(
+        role=User.Role.CLIENT, email="client@test.loc", username="client"
+    )
 
 
 @pytest.fixture
@@ -60,7 +70,6 @@ def client_wallet(client_profile):
     """
     Returns client wallet created via signal.
     """
-
     return client_profile.client_wallet
 
 
@@ -70,7 +79,9 @@ def specialist_user(user_factory):
     Minimal specialist user.
     Profile should be created via signals.
     """
-    return user_factory(role=User.Role.SPECIALIST)
+    return user_factory(
+        role=User.Role.SPECIALIST, email="specialist@test.loc", username="specialist"
+    )
 
 
 @pytest.fixture
@@ -97,3 +108,111 @@ def employee_user(user_factory):
     Minimal employee user.
     """
     return user_factory(role=User.Role.EMPLOYEE)
+
+
+# ============================================================
+# SERVICES
+# ============================================================
+@pytest.fixture
+def create_service(db):
+    """
+    Create base service
+    """
+    return Service.objects.create(
+        title="Lorem Ipsum",
+        description="Lorem Ipsum",
+        base_price=50,
+        is_active=True,
+    )
+
+
+@pytest.fixture
+def create_specialist_service(db, specialist_profile, create_service):
+    """
+    Connect Specialist with Service
+    """
+    return SpecialistService.objects.create(
+        specialist=specialist_profile,
+        service=create_service,
+        payout_type=SpecialistService.Type.FULL,
+        payout_value=None,
+        is_active=True,
+    )
+
+
+# ============================================================
+# SERVICE RECORD - APPOINTMENTS
+# ============================================================
+@pytest.fixture
+def create_service_record(db, client_profile, specialist_profile, create_service):
+    """
+    Create ServiceRecord.
+    """
+    return ServiceRecord.objects.create(
+        client=client_profile,
+        specialist=specialist_profile,
+        service=create_service,
+        scheduled_at=timezone.now(),
+    )
+
+
+# ============================================================
+# WALLETS - TRANSACTIONS
+# ============================================================
+@pytest.fixture
+def transaction_factory(db):
+    """
+    Factory for creating transaction with different options.
+    """
+
+    def create_transaction(**kwargs):
+        defaults = {
+            "wallet": None,
+            "amount": 100,
+            "type": ClientWalletTransaction.Type.MANUAL_TOPUP,
+            "balance_after": 0,
+            "service_record": None,
+        }
+        defaults.update(kwargs)
+
+        return ClientWalletTransaction.objects.create(**defaults)
+
+    return create_transaction
+
+
+@pytest.fixture
+def transaction_manual_topup(transaction_factory, client_wallet):
+    """
+    Create manual topup transaction.
+    """
+    return transaction_factory(wallet=client_wallet, amount=100)
+
+
+@pytest.fixture
+def transaction_service_charge(
+    transaction_factory, client_wallet, create_service_record
+):
+    """
+    Create Service Charge transaction.
+    """
+    return transaction_factory(
+        wallet=client_wallet,
+        amount=100,
+        type=ClientWalletTransaction.Type.SERVICE_CHARGE,
+        service_record=create_service_record,
+    )
+
+
+@pytest.fixture
+def transaction_service_refund(
+    transaction_factory, client_wallet, create_service_record
+):
+    """
+    Create Service Refund transaction.
+    """
+    return transaction_factory(
+        wallet=client_wallet,
+        amount=100,
+        type=ClientWalletTransaction.Type.REFUND,
+        service_record=create_service_record,
+    )
