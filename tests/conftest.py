@@ -189,7 +189,7 @@ def service_record_factory(db, client_profile, specialist_profile, create_servic
 
 
 @pytest.fixture
-def create_service_record(service_record_factory):
+def create_service_record(service_record_factory, create_specialist_service):
     """
     Create ServiceRecord.
     """
