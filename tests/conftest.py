@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 import pytest
 from django.contrib.auth import get_user_model
 from django.utils import timezone
@@ -170,16 +172,28 @@ def create_specialist_service_fixed_price(specialist_service_factory):
 # SERVICE RECORD - APPOINTMENTS
 # ============================================================
 @pytest.fixture
-def create_service_record(db, client_profile, specialist_profile, create_service):
+def service_record_factory(db, client_profile, specialist_profile, create_service):
+    def create_service_record(**kwargs):
+        defaults = {
+            "client": client_profile,
+            "specialist": specialist_profile,
+            "service": create_service,
+            "status": ServiceRecord.Status.PLANNED,
+            "scheduled_at": timezone.now() - timedelta(hours=1),
+        }
+        defaults.update(kwargs)
+
+        return ServiceRecord.objects.create(**defaults)
+
+    return create_service_record
+
+
+@pytest.fixture
+def create_service_record(service_record_factory):
     """
     Create ServiceRecord.
     """
-    return ServiceRecord.objects.create(
-        client=client_profile,
-        specialist=specialist_profile,
-        service=create_service,
-        scheduled_at=timezone.now(),
-    )
+    return service_record_factory()
 
 
 # ============================================================
