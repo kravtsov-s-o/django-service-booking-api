@@ -127,16 +127,42 @@ def create_service(db):
 
 
 @pytest.fixture
-def create_specialist_service(db, specialist_profile, create_service):
+def specialist_service_factory(db, specialist_profile, create_service):
     """
-    Connect Specialist with Service
+    Factory for specialist service.
     """
-    return SpecialistService.objects.create(
-        specialist=specialist_profile,
-        service=create_service,
-        payout_type=SpecialistService.Type.FULL,
-        payout_value=None,
-        is_active=True,
+
+    def create_specialist_service(**kwargs):
+        defaults = {
+            "specialist": specialist_profile,
+            "service": create_service,
+            "payout_type": SpecialistService.Type.FULL,
+            "payout_value": None,
+            "is_active": True,
+        }
+
+        defaults.update(kwargs)
+
+        return SpecialistService.objects.create(**defaults)
+
+    return create_specialist_service
+
+
+@pytest.fixture
+def create_specialist_service(specialist_service_factory):
+    """
+    Connect Specialist Service with full price
+    """
+    return specialist_service_factory(payout_type=SpecialistService.Type.FULL)
+
+
+@pytest.fixture
+def create_specialist_service_fixed_price(specialist_service_factory):
+    """
+    Connect Specialist Service with fixed price
+    """
+    return specialist_service_factory(
+        payout_type=SpecialistService.Type.FIXED, payout_value=100
     )
 
 
